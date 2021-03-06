@@ -1,23 +1,25 @@
-import { Comment, subscribe } from '../models/Comment'
-import {useEffect, useState} from 'react'
+import { CommentType } from '../models/Comment'
+import React, { useEffect } from 'react'
+import { useMst } from '../models/RootModel'
+import { observer } from 'mobx-react-lite'
 
-export interface CommentListProps {
-  initialComments: Comment[]
-}
+export interface CommentListProps {}
 
-const CommentList: React.FC<CommentListProps> = props => {
-  const [count, setCount] = useState(props.initialComments.length)
+const CommentList: React.FC<CommentListProps> = observer(props => {
+  const {
+    comments: { commentsArray, subscribe, produce }
+  } = useMst()
   useEffect(() => {
-    subscribe(comment => {
-      console.log('received comment: ', comment)
-      setCount(count + 1)
-    })
-  }, [count])
+    subscribe(produce)
+  }, [commentsArray.length])
 
-  return <div>
-    [YOU CAN PUT COMMENT LIST COMPONENT HERE, OR ANYWHERE YOU WANT REALLY!]
-    there are {count} comments so far.
-  </div>
-}
+  return (
+    <div>
+      {commentsArray.map((comment: CommentType) => {
+        return <div key={comment.id}>{comment.message}</div>
+      })}
+    </div>
+  )
+})
 
 export default CommentList

@@ -1,43 +1,28 @@
-import { loremIpsum } from 'lorem-ipsum'
 import { name } from './names'
+import { Instance, types } from 'mobx-state-tree'
 
-export interface Comment {
-  id: number,
+export interface IComment {
+  id: number
   author: string
   message: string
   time: Date
 }
 
-let nextId = 1
-
-const makeComment = (): Comment => ({
-  id: nextId++,
-  author: name(),
-  message: loremIpsum({ count: ~~(Math.random() * 3) }),
-  time: new Date()
-})
-
-export const makeComments = (count: number) => {
-  const comments = []
-  for (let i = 0; i < count; i++) {
-    comments.push(makeComment())
-  }
-  return comments
-}
-
-let lastComment: Comment
-
-const makeDupe = () => Math.random() < 0.1 && lastComment
-
-export const subscribe = (callback: (comment: Comment) => void) => {
-  const interval = Math.random() * 1000 + 2000
-  console.log(`subscribing for next message, will arrive in ${interval.toFixed(0)} ms`)
-  const produce = () => {
-    // every once in a while we send a dupe message
-    if (!makeDupe()) {
-      lastComment = makeComment()
+export const Comment = types
+  .model('Comment', {
+    id: types.identifierNumber,
+    author: '',
+    message: '',
+    time: types.maybeNull(types.Date)
+  })
+  .actions(self => {
+    return {
+      afterCreate() {
+        self.author = name()
+        self.time = new Date()
+      }
     }
-    callback(lastComment)
-  }
-  setTimeout(produce, interval)
-}
+  })
+
+const tempComment = Comment.create({id: 99999})
+export interface CommentType extends Instance<typeof tempComment> {}
