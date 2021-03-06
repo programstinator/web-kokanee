@@ -16,10 +16,12 @@
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
     "@material-ui/styles": "^4.9.0",
+    "@types/react-list": "^0.8.5",
     "lorem-ipsum": "^2.0.3",
     "next": "^9.2.0",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-list": "^0.8.16"
   },
   "devDependencies": {
     "@types/node": "^13.1.8",

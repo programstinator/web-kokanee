@@ -1,8 +1,8 @@
 import { loremIpsum } from 'lorem-ipsum'
-import { name } from './names'
+import { name, names } from './names'
 
 export interface Comment {
-  id: number,
+  id: number
   author: string
   message: string
   time: Date
@@ -10,12 +10,37 @@ export interface Comment {
 
 let nextId = 1
 
-const makeComment = (): Comment => ({
-  id: nextId++,
-  author: name(),
-  message: loremIpsum({ count: ~~(Math.random() * 3) }),
-  time: new Date()
+interface CommentsMap {}
+
+const commentsMap: { [index: string]: any } = {}
+names.forEach(name => {
+  commentsMap[name] = []
 })
+
+const commentsSet = new Set();
+
+const makeComment = (): Comment => {
+  let newName = name()
+  let newMessage = loremIpsum({ count: ~~(Math.random() * 3) })
+  let newComment = {
+    id: nextId++,
+    author: newName,
+    message: newMessage,
+    time: new Date()
+  }
+  while (commentsSet.has(newMessage)) {
+    newName = name()
+    newMessage = loremIpsum({ count: ~~(Math.random() * 3) })
+    newComment = {
+      id: nextId++,
+      author: newName,
+      message: newMessage,
+      time: new Date()
+    }
+  }
+  commentsSet.add(newMessage)
+  return newComment
+}
 
 export const makeComments = (count: number) => {
   const comments = []

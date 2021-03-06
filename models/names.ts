@@ -1,4 +1,4 @@
-const names = [
+export const names = [
   'Tianna Moore',
   'Imani White',
   'Jada Harris',

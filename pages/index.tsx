@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import CommentList from '../components/CommentList'
 import { makeComments } from '../models/Comment'
 
-const numOfInitialComments = 10
+const numOfInitialComments = 10000
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -67,7 +67,6 @@ const Home = () => {
         If you want to do something like create a new page route, the{' '}
         <a href="https://nextjs.org/docs/basic-features/pages">nextjs docs</a> are quite useful.{' '}
       </p>
-      <CommentList initialComments={makeComments(numOfInitialComments)} />
       <List>
         <ListItem>
           <ListItemText>
@@ -78,6 +77,7 @@ const Home = () => {
           <ListItemText>Extra credit 2: Ensure there are no duplicate messages in the stream.</ListItemText>
         </ListItem>
       </List>
+      <CommentList initialComments={makeComments(numOfInitialComments)} />
     </div>
   )
 }
